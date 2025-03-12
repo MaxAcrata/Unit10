@@ -15,7 +15,7 @@ public class Radio {
 
     // Конструктор установкой количества
     public Radio(int setAmountOfStation) {
-        setCurrentStation(currentStation+setAmountOfStation);
+        setCurrentStation(setAmountOfStation);
 
     }
 
