@@ -13,10 +13,9 @@ public class Radio {
 
     }
 
-    // Конструктор установкой количества
-    public Radio(int setAmountOfStation) {
-        setCurrentStation(setAmountOfStation);
-
+     public Radio(int setAmountOfStation) {
+        this.maxStation = setAmountOfStation - 1; // Устанавливаем максимальную станцию
+        this.currentStation = minStation; // Устанавливаем текущую станцию на минимум
     }
 
     // Метод для получения текущей радиостанции
