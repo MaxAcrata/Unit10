@@ -10,9 +10,9 @@ public class Radio {
 
     // Конструктор по умолчанию
     public Radio() {
-
     }
 
+    // Конструктор с установкой количества станций
      public Radio(int setAmountOfStation) {
         this.maxStation = setAmountOfStation - 1; // Устанавливаем максимальную станцию
         this.currentStation = minStation; // Устанавливаем текущую станцию на минимум
