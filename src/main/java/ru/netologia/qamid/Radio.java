@@ -2,55 +2,78 @@ package ru.netologia.qamid;
 
 public class Radio {
 
-    // Поля класса
+   // Поля класса
     private int minStation = 0; // Минимальный номер радиостанции
     private int maxStation = 9; // Максимальный номер радиостанции
-    private int currentStation = minStation; // Текущая радиостанция
-
+    private int currentStation = minStation; // Текущая радиостанция (инициализирована значением minStation)
+    private int soundVolume = 0; // Громкость звука (инициализирована значением 0)
 
     // Конструктор по умолчанию
     public Radio() {
+        // Нет необходимости инициализировать currentStation и soundVolume, так как они уже инициализированы при объявлении
     }
 
-    // Конструктор с установкой количества станций
-    public Radio(int amountOfStation) {
-        this.maxStation = amountOfStation - 1; // Устанавливаем максимальную станцию
-    }
-    
     // Метод для получения текущей радиостанции
     public int getCurrentStation() {
         return currentStation;
     }
 
-    // Метод для установки текущей радиостанции
+    // Метод для установки номера радиостанции вручную
     public void setCurrentStation(int station) {
-        if (station >= minStation && station <= maxStation) {
+        if (station >= minStation && station <= maxStation) {  // Если значение находится в допустимом диапазоне, устанавливаем его
             currentStation = station;
         } else if (station < minStation) {
-            currentStation = minStation; // Если меньше минимума, устанавливаем минимум
+            currentStation = minStation; // Если значение меньше минимума, устанавливаем минимальное значение
         } else {
-            currentStation = maxStation; // Если больше максимума, устанавливаем максимум
+            currentStation = maxStation; // Если значение больше максимума, устанавливаем максимальное значение
         }
     }
 
     // Метод для переключения на следующую радиостанцию
     public void nextStation() {
         if (currentStation < maxStation) {
-            // Если текущая станция не является последней, увеличиваем её на 1
-            currentStation++;
+            currentStation++; // Увеличиваем станцию на 1, если она меньше максимума
         } else {
-            // Если текущая станция последняя, переключаемся на первую
-            currentStation = minStation;
+            currentStation = minStation; // Если текущая станция равна максимуму, переходим на минимум
         }
     }
-    // Метод для переключения на следующую радиостанцию
+
+    // Метод для переключения на предыдущую радиостанцию
     public void prevStation() {
         if (currentStation > minStation) {
-            // Если текущая станция не является первой, уменьшаем её на 1
-            currentStation--;
+            currentStation--; // Уменьшаем станцию на 1, если она больше минимума
         } else {
-            // Если текущая станция первая, переключаемся на последнюю
-            currentStation = maxStation;
+            currentStation = maxStation; // Если текущая станция равна минимуму, переходим на максимум
+        }
+    }
+
+    // Метод для получения текущего уровня громкости
+    public int getSoundVolume() {
+        return soundVolume;
+    }
+
+    // Метод для установки уровня громкости вручную
+    public void setSoundVolume(int volume) {
+        if (volume >= 0 && volume <= 100) { // Если значение находится в допустимом диапазоне, устанавливаем его
+            soundVolume = volume;
+        } else if (volume < 0) {
+            soundVolume = 0; // Если значение меньше 0, устанавливаем минимальное значение
+        } else {
+            soundVolume = 100; // Если значение больше 100, устанавливаем максимальное значение
+        }
+    }
+
+    // Метод для увеличения громкости
+    public void increaseVolume() {
+        if (soundVolume < 100) { // Увеличиваем громкость, если она меньше максимального значения
+            soundVolume++;
+        }
+    }
+
+    // Метод для уменьшения громкости
+    public void decreaseVolume() {
+        if (soundVolume > 0) { // Уменьшаем громкость, если она больше минимального значения
+            soundVolume--;
         }
     }
 
