@@ -3,66 +3,63 @@ package ru.netologia.qamid;
 public class Radio {
 
     // Поля класса
-    private int currentStation; // Номер текущей радиостанции (0-9)
-    private int soundVolume;    // Громкость звука (0-100)
+    private int minStation = 0; // Минимальный номер радиостанции
+    private int maxStation = 9; // Максимальный номер радиостанции
+    private int currentStation = minStation; // Текущая радиостанция (инициализирована значением minStation)
+    private int soundVolume = 0; // Громкость звука (инициализирована значением 0)
 
     // Конструктор по умолчанию
     public Radio() {
-        this.currentStation = 0; // По умолчанию установлена первая станция
-        this.soundVolume = 0;    // По умолчанию громкость равна 0
+        // Нет необходимости инициализировать currentStation и soundVolume, так как они уже инициализированы при объявлении
     }
 
     // Метод для получения текущей радиостанции
     public int getCurrentStation() {
-
         return currentStation;
     }
 
     // Метод для установки номера радиостанции вручную
     public void setCurrentStation(int station) {
-        if (station >= 0 && station <= 9) {  // Если значение находится в допустимом диапазоне устанавливаем его
+        if (station >= minStation && station <= maxStation) {  // Если значение находится в допустимом диапазоне, устанавливаем его
             currentStation = station;
-        } else if (station < 0) {
-            currentStation = 0; // Если значение меньше 0, устанавливаем минимальное значение (0)
+        } else if (station < minStation) {
+            currentStation = minStation; // Если значение меньше минимума, устанавливаем минимальное значение
         } else {
-            currentStation = 9; // Если значение больше 9, устанавливаем минимальное значение (9)
+            currentStation = maxStation; // Если значение больше максимума, устанавливаем максимальное значение
         }
     }
 
-
     // Метод для переключения на следующую радиостанцию
     public void nextStation() {
-        if (currentStation == 9) {
-            currentStation = 0; // Если достигнута последняя станция, переходим на первую
+        if (currentStation < maxStation) {
+            currentStation++; // Увеличиваем станцию на 1, если она меньше максимума
         } else {
-            currentStation++; // Иначе переключаемся на следующую станцию
+            currentStation = minStation; // Если текущая станция равна максимуму, переходим на минимум
         }
     }
 
     // Метод для переключения на предыдущую радиостанцию
     public void prevStation() {
-        if (currentStation == 0) {
-            currentStation = 9; // Если достигнута первая станция, переходим на последнюю
+        if (currentStation > minStation) {
+            currentStation--; // Уменьшаем станцию на 1, если она больше минимума
         } else {
-            currentStation--; // Иначе переключаемся на предыдущую станцию
+            currentStation = maxStation; // Если текущая станция равна минимуму, переходим на максимум
         }
     }
 
-
     // Метод для получения текущего уровня громкости
     public int getSoundVolume() {
-
         return soundVolume;
     }
 
     // Метод для установки уровня громкости вручную
     public void setSoundVolume(int volume) {
-        if (volume >= 0 && volume <= 100) { // Если значение находится в допустимом диапазоне устанавливаем его
+        if (volume >= 0 && volume <= 100) { // Если значение находится в допустимом диапазоне, устанавливаем его
             soundVolume = volume;
         } else if (volume < 0) {
-            soundVolume = 0; // Если значение меньше 0, устанавливаем минимальное значение (0)
+            soundVolume = 0; // Если значение меньше 0, устанавливаем минимальное значение
         } else {
-            soundVolume = 100; // Если значение больше 100, устанавливаем минимальное значение (100)
+            soundVolume = 100; // Если значение больше 100, устанавливаем максимальное значение
         }
     }
 
@@ -79,7 +76,4 @@ public class Radio {
             soundVolume--;
         }
     }
-
-
 }
-
