@@ -1,92 +1,79 @@
 package ru.netologia.qamid;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-
 public class RadioTest {
 
+    //@ TODO Тесты для стандартного конструктора (станции 0-9)
 
-    // Параметризованный тест с использованием @CsvSource
+    /**
+     * Тестирование переключения на следующую станцию.
+     */
     @ParameterizedTest
     @CsvSource({
-            "0, 1",  // Если текущая станция 0, результат 1
-            "5, 6",  // Если текущая станция 5, результат 6
-            "9, 0",  // Если текущая станция 9, результат 0 (переход на первую станцию)
-            "-1, 1", // Если текущая станция -1 (недопустимое значение), результат 1
-            "10, 0"  // Если текущая станция 10 (недопустимое значение), результат 0
+            "0, 1",   // Стандартное переключение с 0 на 1
+            "5, 6",    // Стандартное переключение с 5 на 6
+            "9, 0",    // Циклическое переключение с 9 на 0
+            "-1, 1",   // Некорректная станция (-1 → 0) → next → 1
+            "10, 0"    // Некорректная станция (10 → 9) → next → 0
     })
     public void testNextStation(int currentStation, int expected) {
         Radio radio = new Radio();
-        // Устанавливаем начальную станцию
         radio.setCurrentStation(currentStation);
         radio.nextStation();
-
-        // Получаем фактическое значение текущей станции
-        int actual = radio.getCurrentStation();
-        Assertions.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, radio.getCurrentStation());
     }
 
-    // Параметризованный тест с использованием @CsvSource
+    /**
+     * Тестирование переключения на предыдущую станцию.
+     */
     @ParameterizedTest
     @CsvSource({
-            "0, 9",  // Если текущая станция 0, результат 9
-            "5, 4",  // Если текущая станция 5, результат 4
-            "9, 8",  // Если текущая станция 9, результат 8
-            "-1, 9", // Если текущая станция -1 (недопустимое значение), результат 9
-            "10, 8"  // Если текущая станция 10 (недопустимое значение), результат 8
+            "0, 9",   // Циклическое переключение с 0 на 9
+            "5, 4",    // Стандартное переключение с 5 на 4
+            "9, 8",    // Стандартное переключение с 9 на 8
+            "-1, 9",   // Некорректная станция (-1 → 0) → prev → 9
+            "10, 8"    // Некорректная станция (10 → 9) → prev → 8
     })
     public void testPrevStation(int currentStation, int expected) {
         Radio radio = new Radio();
-        // Устанавливаем начальную станцию
         radio.setCurrentStation(currentStation);
         radio.prevStation();
-
-        // Получаем фактическое значение текущей станции
-        int actual = radio.getCurrentStation();
-        Assertions.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, radio.getCurrentStation());
     }
+
+    //@ TODO Тесты для конструктора с установкой начальной станции
 
     @ParameterizedTest
     @CsvSource({
-            "0,1",  // Если установленная станция 2, результат 1
-            "5,6",  // Если установленная станция 5, результат 6
-            "9,0",  // Если текущая станция 9, результат (переход на первую станцию)
-            "-1, 1", // Если установленная станция -1 (недопустимое значение), результат 1
-            "10, 0"  // Если установленная станция 10 (недопустимое значение), результат 0
+            "0, 1",   // Стандартное переключение вперед
+            "5, 6",    // Среднее значение
+            "9, 0",    // Циклическое переключение
+            "-1, 1",   // Некорректное значение (ниже минимума)
+            "10, 0"    // Некорректное значение (выше максимума)
     })
-    public void testNextStationWithValues(int setStation, int expected) {
-
-        Radio radio = new Radio(setStation);
-
-        // Запускаем функцию расчета следующей станции
+    public void testNextStationWithParam(int station, int expected) {
+        Radio radio = new Radio(station);
         radio.nextStation();
-
-        // Получаем фактическое значение текущей станции
-        int actual = radio.getCurrentStation();
-
-        Assertions.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, radio.getCurrentStation());
     }
 
     @ParameterizedTest
     @CsvSource({
-            "0, 9",  // Если текущая станция 0, результат 1
-            "5, 4",  // Если текущая станция 5, результат 6
-            "9, 8",  // Если текущая станция 9, результат 0 (переход на первую станцию)
-            "-1, 9", // Если текущая станция -1 (недопустимое значение), результат 9
-            "10, 8"  // Если текущая станция 10 (недопустимое значение), результат 8
+            "0, 9",   // Циклическое переключение назад
+            "5, 4",    // Среднее значение
+            "9, 8",    // Стандартное переключение назад
+            "-1, 9",   // Некорректное значение (ниже минимума)
+            "10, 8"    // Некорректное значение (выше максимума)
     })
-    public void testPrevStationWithValues(int setStation, int expected) {
-
-        Radio radio = new Radio(setStation);
-
-        // Запускаем функцию расчета предыдущей станции
+    public void testPrevStationWithParam(int station, int expected) {
+        Radio radio = new Radio(station);
         radio.prevStation();
-
-        // Получаем фактическое значение текущей станции
-        int actual = radio.getCurrentStation();
-
-        Assertions.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, radio.getCurrentStation());
     }
+
+
 }

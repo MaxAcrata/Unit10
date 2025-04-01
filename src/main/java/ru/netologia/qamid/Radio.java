@@ -1,61 +1,67 @@
 package ru.netologia.qamid;
 
 public class Radio {
+    // Границы диапазона станций
+    private final int minStation = 0;    // Минимальный номер станции
+    private final int maxStation = 9;    // Максимальный номер станции
+    private int currentStation;          // Текущая выбранная станция
 
-    // Поля класса
-    private int minStation = 0; // Минимальный номер радиостанции
-    private int maxStation = 9; // Максимальный номер радиостанции
-    private int currentStation = minStation; // Текущая радиостанция
-
-
-    // Конструктор по умолчанию
+    /**
+     * Конструктор по умолчанию.
+     * Инициализирует радио с минимальной станцией (0).
+     */
     public Radio() {
-
+        this.currentStation = minStation;
     }
 
-    // Конструктор установкой количества
-    public Radio(int setAmountOfStation) {
-        setCurrentStation(currentStation+setAmountOfStation);
-
+    /**
+     * Конструктор с установкой начальной станции.
+     * @param currentStation номер станции для инициализации
+     */
+    public Radio(int currentStation) {
+        setCurrentStation(currentStation);
     }
 
-    // Метод для получения текущей радиостанции
+    /**
+     * Получить текущую станцию
+     * @return номер текущей станции
+     */
     public int getCurrentStation() {
         return currentStation;
     }
 
-    // Метод для установки текущей радиостанции
+    /**
+     * Установить текущую станцию с проверкой границ
+     * @param station номер станции для установки
+     */
     public void setCurrentStation(int station) {
-        if (station >= minStation && station <= maxStation) {
-            currentStation = station;
-        } else if (station < minStation) {
-            currentStation = minStation; // Если меньше минимума, устанавливаем минимум
-        } else {
-            currentStation = maxStation; // Если больше максимума, устанавливаем максимум
-        }
+        // В пределах диапазона - устанавливаем как есть
+        if (station < minStation) {
+            this.currentStation = minStation;  // Если меньше минимума - ставим минимум
+        } else this.currentStation = Math.min(station, maxStation);  // Если больше максимума - ставим максимум
     }
 
-    // Метод для переключения на следующую радиостанцию
+    /**
+     * Переключиться на следующую станцию.
+     * При достижении максимума переходит на минимальную станцию.
+     */
     public void nextStation() {
-        if (currentStation < maxStation) {
-            // Если текущая станция не является последней, увеличиваем её на 1
-            currentStation++;
+        if (currentStation == maxStation) {
+            currentStation = minStation;  // Циклическое переключение с max на min
         } else {
-            // Если текущая станция последняя, переключаемся на первую
-            currentStation = minStation;
+            currentStation++;             // Обычное увеличение на 1
         }
     }
-    // Метод для переключения на следующую радиостанцию
+
+    /**
+     * Переключиться на предыдущую станцию.
+     * При достижении минимума переходит на максимальную станцию.
+     */
     public void prevStation() {
-        if (currentStation > minStation) {
-            // Если текущая станция не является первой, уменьшаем её на 1
-            currentStation--;
+        if (currentStation == minStation) {
+            currentStation = maxStation;  // Циклическое переключение с min на max
         } else {
-            // Если текущая станция первая, переключаемся на последнюю
-            currentStation = maxStation;
+            currentStation--;            // Обычное уменьшение на 1
         }
     }
-
 }
-
-
