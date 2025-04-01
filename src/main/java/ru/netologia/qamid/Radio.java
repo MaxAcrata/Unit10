@@ -1,110 +1,85 @@
 package ru.netologia.qamid;
 
 public class Radio {
-    // Границы диапазона станций
-    private final int minStation = 0;    // Минимальный номер станции
-    private final int maxStation = 9;    // Максимальный номер станции
-    private int currentStation;          // Текущая выбранная станция
-    private int soundVolume = 0;         // Громкость звука (диапазон 0-100)
 
-    /**
-     * Конструктор по умолчанию. Инициализирует радио с минимальной станцией (0).
-     */
+    // Поля класса
+    private int currentStation; // Номер текущей радиостанции (0-9)
+    private int soundVolume;    // Громкость звука (0-100)
+
+    // Конструктор по умолчанию
     public Radio() {
-        this.currentStation = minStation;
+        this.currentStation = 0; // По умолчанию установлена первая станция
+        this.soundVolume = 0;    // По умолчанию громкость равна 0
     }
 
-    /**
-     * Конструктор с установкой начальной станции.
-     * @param currentStation Номер станции для инициализации.
-     */
-    public Radio(int currentStation) {
-        setCurrentStation(currentStation); // Используем сеттер для валидации
-    }
-
-    /**
-     * Получить текущую станцию.
-     * @return Номер текущей станции.
-     */
+    // Метод для получения текущей радиостанции
     public int getCurrentStation() {
+
         return currentStation;
     }
 
-    /**
-     * Установить текущую станцию с проверкой границ.
-     * @param station Номер станции для установки.
-     */
+    // Метод для установки номера радиостанции вручную
     public void setCurrentStation(int station) {
-        if (station < minStation) {
-            this.currentStation = minStation;
-        } else if (station > maxStation) {
-            this.currentStation = maxStation;
+        if (station >= 0 && station <= 9) {  // Если значение находится в допустимом диапазоне устанавливаем его
+            currentStation = station;
+        } else if (station < 0) {
+            currentStation = 0; // Если значение меньше 0, устанавливаем минимальное значение (0)
         } else {
-            this.currentStation = station;
+            currentStation = 9; // Если значение больше 9, устанавливаем минимальное значение (9)
         }
     }
 
-    /**
-     * Переключиться на следующую станцию.
-     * При достижении максимума переходит на минимальную станцию.
-     */
+
+    // Метод для переключения на следующую радиостанцию
     public void nextStation() {
-        if (currentStation == maxStation) {
-            currentStation = minStation;
+        if (currentStation == 9) {
+            currentStation = 0; // Если достигнута последняя станция, переходим на первую
         } else {
-            currentStation++;
+            currentStation++; // Иначе переключаемся на следующую станцию
         }
     }
 
-    /**
-     * Переключиться на предыдущую станцию.
-     * При достижении минимума переходит на максимальную станцию.
-     */
+    // Метод для переключения на предыдущую радиостанцию
     public void prevStation() {
-        if (currentStation == minStation) {
-            currentStation = maxStation;
+        if (currentStation == 0) {
+            currentStation = 9; // Если достигнута первая станция, переходим на последнюю
         } else {
-            currentStation--;
+            currentStation--; // Иначе переключаемся на предыдущую станцию
         }
     }
 
-    /**
-     * Получить текущий уровень громкости.
-     * @return Текущая громкость (0-100).
-     */
+
+    // Метод для получения текущего уровня громкости
     public int getSoundVolume() {
+
         return soundVolume;
     }
 
-    /**
-     * Установить уровень громкости.
-     * @param volume Значение громкости (автоматически ограничивается диапазоном 0-100).
-     */
+    // Метод для установки уровня громкости вручную
     public void setSoundVolume(int volume) {
-        if (volume < 0) {
-            soundVolume = 0;
-        } else if (volume > 100) {
-            soundVolume = 100;
-        } else {
+        if (volume >= 0 && volume <= 100) { // Если значение находится в допустимом диапазоне устанавливаем его
             soundVolume = volume;
+        } else if (volume < 0) {
+            soundVolume = 0; // Если значение меньше 0, устанавливаем минимальное значение (0)
+        } else {
+            soundVolume = 100; // Если значение больше 100, устанавливаем минимальное значение (100)
         }
     }
 
-    /**
-     * Увеличить громкость на 1. Максимальное значение — 100.
-     */
+    // Метод для увеличения громкости
     public void increaseVolume() {
-        if (soundVolume < 100) {
+        if (soundVolume < 100) { // Увеличиваем громкость, если она меньше максимального значения
             soundVolume++;
         }
     }
 
-    /**
-     * Уменьшить громкость на 1. Минимальное значение — 0.
-     */
+    // Метод для уменьшения громкости
     public void decreaseVolume() {
-        if (soundVolume > 0) {
+        if (soundVolume > 0) { // Уменьшаем громкость, если она больше минимального значения
             soundVolume--;
         }
     }
+
+
 }
+
